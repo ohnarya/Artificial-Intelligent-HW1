@@ -68,7 +68,8 @@ public class Search {
 				}
 			}
 		}catch(IOException e){
-			e.printStackTrace();
+			System.out.println("Cannot Open the input file. \nput an input file in the same directory of jar file or /src/");
+			return;
 		}
 		int sx = Integer.parseInt(args[1]);
 		int sy = Integer.parseInt(args[2]);
