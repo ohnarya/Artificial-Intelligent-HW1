@@ -24,6 +24,7 @@ public class Graph {
 		edges     = new HashMap<Integer, int[]>();
 		this.type = type;
 	}
+	/* GBFS */
 	public Node GBFS(int sx, int sy, int gx, int gy){
 		
 		System.out.format ("Vertices=%d, Edges = %d\n", this.totalVertice, this.totalEdges );
