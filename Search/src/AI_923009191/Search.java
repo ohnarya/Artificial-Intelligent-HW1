@@ -1,3 +1,9 @@
+/*
+ * Name   : Search.java
+ * Desc   : take a graph from arguments and find a goal
+ * Author : Jiyoung Hwang (UIN : 923009191)
+ */
+
 package AI_923009191;
 
 import java.io.BufferedReader;
@@ -103,6 +109,9 @@ public class Search {
 		}else{
 			System.out.println("Goal is NOT found");
 		}
+		for(int i=0;i<g.matrix[39].length;i++)
+			if(g.matrix[39][i]>0)
+				System.out.println("matrix " + i + " : " + g.matrix[39][i] );
 		
 	}
 }
@@ -146,7 +155,7 @@ class Node
 		for(int i = 0; i< g.matrix[p.vid].length;i++ ){
 			
 			if(g.matrix[p.vid][i]>=0){				
-				if(g.explored[i])
+				if(g.explored.containsKey(i))
 					continue;
 				if(g.vertices.containsKey(i)){
 					int[] vpair = g.vertices.get(i);

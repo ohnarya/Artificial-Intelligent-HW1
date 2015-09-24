@@ -1,3 +1,8 @@
+/*
+ * Name   : Graph.java
+ * Desc   : run 3 different algorithms
+ * Author : Jiyoung Hwang (UIN : 923009191)
+ */
 package AI_923009191;
 
 import java.util.*;
@@ -14,7 +19,8 @@ public class Graph {
 	HashMap<Integer, int[]> edges;	
 	
 	int [][]  matrix;
-	boolean[] explored = {false};
+	HashMap<Integer,Node> explored = new HashMap<Integer,Node>();
+	
 	int       goal;
 	
 	List<Integer> successors;
@@ -45,7 +51,10 @@ public class Graph {
 		System.out.format("goal = %d (%d,%d)\n", goal,gx,gy);
 		
 		Node n = new Node(svid, null, 0, sx,sy);
-		explored[svid]=true;
+		
+		if(!explored.containsKey(svid))
+			explored.put(svid, n);
+		
 		n.heur = getHeur(n.x,n.y, gx,gy);
 		
 		frontier.add(n);
@@ -63,7 +72,9 @@ public class Graph {
 			ArrayList<Node> s = n.getSuccessor(this , n);
 			
 		    for(Node nn : s){
-		    	explored[nn.vid] = true;
+				if(!explored.containsKey(nn.vid))
+					explored.put(nn.vid, nn);
+				
 		    	if(frontier.contains(nn))
 		    		continue;
 		    	nn.heur = getHeur(nn.x,nn.y, gx,gy);
@@ -96,12 +107,14 @@ public class Graph {
 		System.out.format("goal = %d (%d,%d)\n", goal,gx,gy);
 		
 		Node n = new Node(svid, null, 0, sx,sy);
-		explored[svid]=true;
+
 		
 		frontier.push(n);
 		
 		while(!frontier.isEmpty()){
 			n = frontier.pop();
+			if(!explored.containsKey(svid))
+				explored.put(svid, n);		
 			n.heur = getHeur(n.x,n.y, gx,gy);
 	    	System.out.format("iter=%d, frontier=%d, popped=%d (%d,%d) , depth= %d, dist2goal=%.2f\n",
 			          (++iter),       frontier.size(),    n.vid,n.x,n.y, n.depth, n.heur);
@@ -114,7 +127,9 @@ public class Graph {
 			ArrayList<Node> s = n.getSuccessor(this , n);
 			
 		    for(Node nn : s){
-		    	explored[nn.vid] = true;
+				if(!explored.containsKey(nn.vid))
+					explored.put(nn.vid, nn);
+				
 		    	if(frontier.contains(nn))
 		    		continue;
 		    	frontier.push(nn);
@@ -148,8 +163,9 @@ public class Graph {
 	    
 		Node n = new Node(svid,null,0,sx,sy);
 		
-	    explored[svid]=true;
-	    
+		if(!explored.containsKey(svid))
+			explored.put(svid, n);	  
+		
 	    frontier.add(n);
 	    
 	    while(!frontier.isEmpty()){
@@ -166,7 +182,9 @@ public class Graph {
 	    	ArrayList<Node> s = n.getSuccessor(this,n);
 		    
 		    for(Node nn : s){
-		    	explored[nn.vid] = true;
+				if(!explored.containsKey(nn.vid))
+					explored.put(nn.vid, nn);
+				
 		    	if(frontier.contains(nn))
 		    		continue;
 		    	frontier.add(nn);
@@ -229,18 +247,6 @@ public class Graph {
 		for(int i = 0;i<totalVertice;i++){
 			Arrays.fill(matrix[i],-1);
 		}
-		explored = new boolean[totalVertice];
-	}
-	
-	/* countVisited Vertices */
-	public int countvisited(){
-		int i=0;
-		for(boolean b : explored){
-			if(b)
-				i++;
-			
-		}
-		return i;
 	}
 	
 	/* print Summary */
@@ -248,7 +254,7 @@ public class Graph {
 		System.out.println("Search algorithm = " + type);
 		System.out.println("Total iteration = " + iter);
 		System.out.println("Max frontier size = " + maxfrontier);
-		System.out.println("vertices visited = " + countvisited()+"/"+this.totalVertice);
+		System.out.println("vertices visited = " + explored.size() +"/"+this.totalVertice);
 		System.out.println("path length = " + depth);
 		System.out.println("==========================");
 	}
